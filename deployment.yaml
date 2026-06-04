@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mon-site-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mon-site
+  template:
+    metadata:
+      labels:
+        app: mon-site
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mon-service-web
+spec:
+  selector:
+    app: mon-site
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: NodePort
